@@ -1,6 +1,9 @@
 
-#Script for testing DataBase  
-#Issue : there is problem with colummn INN .
+#Script for testing DataBase 
+# methods:
+# 1) get all data from table clients , you can replace with your data
+# 2) add data in data base
+
 
 import pymysql
 
