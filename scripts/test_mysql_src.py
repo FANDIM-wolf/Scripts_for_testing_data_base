@@ -1,11 +1,11 @@
 
-#Script for testing DataBase 
-# methods:
-# 1) get all data from table clients , you can replace with your data
-# 2) add data in data base
-
+#Script for testing DataBase  
+#Issue : there is problem with colummn INN .
 
 import pymysql
+
+from pyfiglet import figlet_format 
+     
 
 def get_all_data(cursor):
     # SQL-запрос для выборки всех данных из таблицы 'clients'
@@ -49,9 +49,9 @@ def insert_client_values(connection, fss, phone, address, inn, email):
             cursor.execute(query, values)
             connection.commit()
             
-            print("Данные успешно добавлены в таблицу 'clients'.")
+            print("Data was successufully added in 'clients' .")
     except Exception as error:
-        print(f"Ошибка при вставке данных: {error}")
+        print(f"Error in arguments : {error}")
 
 try:
     connection = pymysql.connect(
@@ -63,19 +63,21 @@ try:
         cursorclass=pymysql.cursors.DictCursor
     )
     print("successfully connected...")
+    print(figlet_format("ShishBank", font = "standard" ))
     cursor = connection.cursor()
-    fss = "Some FSS"
-    phone = 1234567890
-    address = "Some Address"
-    inn = 0
-    email = "mail@example.com"
+    #fss = "Some FSS"
+    #phone = 1234567890
+    #address = "Some Address"
+    #inn = 0
+    #email = "mail@example.com"
     
     # Вставить данные в таблицу 'clients'
     #insert_client_values(connection, fss, phone, address, inn, email)
 
-    clients = get_all_data(cursor) 
-    print_clients(clients)
+    #clients = get_all_data(cursor) 
+    #print_clients(clients)
 
+    input("Enter password :")
 except Exception as ex:
     print("Connection refused...")
     print(ex)
@@ -84,4 +86,4 @@ finally:
     # Закрывать соединение с базой данных всегда надежно в блоке 'finally'
     if connection:
         connection.close()
-        print("Соединение с базой данных закрыто.")
+        print("Conection with the data base is closed.")
