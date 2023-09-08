@@ -18,7 +18,7 @@ def get_all_data(cursor):
             FSS=row["FSS"],
             phone=row["phone"],
             address=row["adress"],
-            INN=row["INN"],
+            
             email=row["email"]
         )
         clients.append(client)
@@ -43,12 +43,12 @@ def get_all_private_data(cursor):
 
     return private_data_list
 
-def get_client_by_login_password(cursor, login, password):
+def get_client_by_login_password(connection, login, password):
     sql = """SELECT *
              FROM private_data AS p
              INNER JOIN clients AS c ON p.user_id = c.user_id
              WHERE p.login = %s AND p.password = %s"""
-
+    cursor = connection.cursor()
     cursor.execute(sql, (login, password))
     row = cursor.fetchone()
 
@@ -58,7 +58,7 @@ def get_client_by_login_password(cursor, login, password):
             FSS=row["FSS"],
             phone=row["phone"],
             address=row["adress"],
-            INN=row["INN"],
+            
             email=row["email"]
             
         )
