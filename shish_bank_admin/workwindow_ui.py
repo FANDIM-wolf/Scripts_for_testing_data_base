@@ -68,6 +68,17 @@ class Ui_Dialog(object):
         self.pushButton.setStyleSheet("border-radius: 10px;\n"
 "background-color:\"#FF5500\";")
         self.pushButton.setObjectName("pushButton")
+        self.pushButton_3 = QtWidgets.QPushButton(self.Tab_2)
+        self.pushButton_3.setGeometry(QtCore.QRect(280, 50, 211, 31))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(18)
+        font.setBold(True)
+        font.setWeight(75)
+        self.pushButton_3.setFont(font)
+        self.pushButton_3.setStyleSheet("border-radius: 10px;\n"
+"background-color:\"#FF5500\";")
+        self.pushButton_3.setObjectName("pushButton_3")
         self.tabWidget.addTab(self.Tab_2, "")
         self.Tab_21 = QtWidgets.QWidget()
         self.Tab_21.setObjectName("Tab_21")
@@ -96,10 +107,10 @@ class Ui_Dialog(object):
         self.label_3.setText(_translate("Dialog", "address"))
         self.label_4.setText(_translate("Dialog", "INN"))
         self.pushButton.setText(_translate("Dialog", "Make transfer"))
+        self.pushButton_3.setText(_translate("Dialog", "Issue credit"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Tab_2), _translate("Dialog", "Operations"))
         self.pushButton_2.setText(_translate("Dialog", "Create Client"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Tab_21), _translate("Dialog", "Users"))
-
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Tab_21), _translate("Dialog", "User"))
 
 
 if __name__ == "__main__":
