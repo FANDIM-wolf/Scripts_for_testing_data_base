@@ -1,5 +1,6 @@
 
-from models import Client , PrivateData
+from models import *
+
 
 
 def get_all_data(cursor):
@@ -88,3 +89,80 @@ def insert_client_values(connection, fss, phone, address, inn, email):
             print("Data was successufully added in 'clients' .")
     except Exception as error:
         print(f"Error in arguments : {error}")
+
+def get_client_by_phone_and_email( connection , phone, email):
+    
+     
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM clients WHERE phone = %s AND email = %s", (phone, email))
+    client_data = cursor.fetchone()
+
+    if client_data:
+        client = Client(
+            user_id=client_data["user_id"],
+            FSS=client_data["FSS"],
+            phone=client_data["phone"],
+            address=client_data["adress"],
+            
+            email=client_data["email"]
+        )
+    else:
+        client = None
+
+    cursor.close()
+    #connection.close()
+
+    return client
+# Function to fetch credit data by user_id
+def get_credit_data_by_user_id( connection ,user_id):
+    # Replace the following placeholders with your actual database credentials
+   
+
+    try:
+        # Create a cursor to execute the SQL query
+        with connection.cursor() as cursor:
+            # SQL query to get credit data by user_id
+            sql_query = """
+                SELECT * FROM credits
+                WHERE user_id = %s;
+            """
+
+            # Execute the SQL query
+            cursor.execute(sql_query, (user_id,))
+
+            # Fetch all rows and store them as a list of tuples
+            credit_data = cursor.fetchall()
+
+        # Close the database connection
+        #connection.close()
+
+        # Return the credit data
+        return credit_data
+
+    except Exception as e:
+        print("Error:", e)
+        # Close the database connection
+        #connection.close()
+        return None
+def get_INN( connection , user_id):
+    
+     
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM inns WHERE user_id = %s ", (user_id))
+    client_data = cursor.fetchone()
+
+    if client_data:
+        client = INN_private_data(
+            user_id=client_data["user_id"],
+            inn=client_data["inn"]
+            
+        )
+    else:
+        client = None
+
+    cursor.close()
+    #connection.close()
+
+    return client
