@@ -1,15 +1,19 @@
-# Script for testing DataBase
-# Issue : there is problem with colummn INN .
+## ''' Main file of ShishBankAdmin System '''
+##
 
 
 from pprint import pformat
+import typing
+from PyQt5 import QtCore ,  QtWidgets , QtGui
 import pymysql
 
 from pyfiglet import figlet_format
 from controller import *
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow , QDialog , QVBoxLayout, QWidget, QSizePolicy , QTableWidgetItem
+from PyQt5.QtCore import pyqtSignal , Qt 
+from PyQt5.QtWidgets import QApplication, QMainWindow , QDialog , QVBoxLayout, QWidget, QSizePolicy , QTableWidgetItem ,  QMessageBox , QLabel  
+from PyQt5.QtGui import QMouseEvent
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
@@ -17,12 +21,13 @@ from mainwindow import Ui_MainWindow
 from workwindow_ui import Ui_Dialog
 from graph_ui import Ui_Dialog_graph
 from creditwindow import Ui_Dialog_credit
+from registerwindow import Ui_Dialog_Register
 from bank_credit_functions import *
 # Variable  is True while program in work , when user quits program ,it is false
 
 
 connection = pymysql.connect(
-        host="localhost",
+        host="host",
         port=port,
         user="user",
         password="password",
@@ -51,7 +56,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_2.clicked.connect(self.open_creditwindow)
         self.pushButton.clicked.connect(self.show_elements)
         self.pushButton_4.clicked.connect(self.get_data_about_user)
-
+        self.pushButton_Register_user.clicked.connect(self.open_register_dialog)
     def open_creditwindow(self):
         creditwindow = CreditWindow()
         creditwindow.exec()
@@ -95,6 +100,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.tableWidget.setItem(row, 3, QTableWidgetItem(str(credits[row]["annual_interest_rate"])))
             self.tableWidget.setItem(row, 4, QTableWidgetItem(str(credits[row]["loan_term"])))
             self.tableWidget.setItem(row, 5, QTableWidgetItem(str(credits[row]["type_of_payment"])))
+    def open_register_dialog(self):
+        registerwindow = RegisterWindow()
+        registerwindow.exec()
 
             
     #def handle_login(self):
@@ -118,8 +126,52 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
 
 
+# ''' SIGNALS '''
+
+    def label_clicked():
+        print("Label clicked")
+
+#  ''' 
+
+class ClickableLabel(QLabel):
+    clicked = pyqtSignal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.LeftButton:
+            print("shit")
+            self.clicked.emit()
 
 
+#class with functions  RegisterWindow 
+class RegisterWindow(QDialog, Ui_Dialog_Register):
+    
+    
+    def __init__(self, parent=None):
+        super(RegisterWindow, self).__init__(parent)
+        self.setupUi(self)
+        self.label_6 = ClickableLabel(self)
+        self.label_6.clicked.connect(self.on_label_6_click)
+        self.label_6.setGeometry(QtCore.QRect(520, 110, 291, 41))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_6.setFont(font)
+        self.label_6.setStyleSheet("color: \"#FF5500\"")
+        self.label_6.setObjectName("label_6")
+        
+    def on_label_6_click(self):
+        print("Label_6 clicked")  
+    
+     
+
+        
+    
+    
 class WorkWindow(QDialog, Ui_Dialog):
     def __init__(self, parent=None):
         super(WorkWindow, self).__init__(parent)
@@ -128,6 +180,7 @@ class WorkWindow(QDialog, Ui_Dialog):
         
         self.pushButton_2.clicked.connect(self.handle_function_create_user)
         self.pushButton_3.clicked.connect(self.handle_function_open_creditwindow)
+        
     def handle_function_open_creditwindow(self):
         creditwindow = CreditWindow()
         creditwindow.exec()
@@ -148,6 +201,7 @@ class CreditWindow(QDialog, Ui_Dialog_credit):
         self.radioButton_2.toggled.connect(self.onClicked_second)
       
         self.pushButton.clicked.connect(self.onClicked_credit_function)
+
     def onClicked(self):
         radioButton = self.sender()
         if radioButton.isChecked():
@@ -181,6 +235,24 @@ class CreditWindow(QDialog, Ui_Dialog_credit):
             self.tableWidget.setRowCount(len(schedule)) # в данном примере идет платеж на 12 месяцев
             self.tableWidget.setColumnCount(4)
             self.tableWidget.setHorizontalHeaderLabels(["month", "interest_payment" , "principal_payment" , "loan_amount"])
+
+            # Add sample data to the table
+            for row in range(len(schedule)):
+                self.tableWidget.setItem(row, 0, QTableWidgetItem(str(schedule[row][0])))
+                self.tableWidget.setItem(row, 1, QTableWidgetItem(str(schedule[row][1])))
+                self.tableWidget.setItem(row, 2, QTableWidgetItem(str(schedule[row][2])))
+                self.tableWidget.setItem(row, 3, QTableWidgetItem(str(schedule[row][3])))
+        if(self.annuity == False):
+            schedule = differential_payment_algorithm(loan_amount,annual_interest_rate,loans_terms_months_or_years)
+            #testing loop
+            for i in range(len(schedule)):
+                print(schedule[i])
+            
+            self.pushButton_2.show()
+            self.tableWidget.show()
+            self.tableWidget.setRowCount(len(schedule)) # в данном примере идет платеж на 12 месяцев
+            self.tableWidget.setColumnCount(4)
+            self.tableWidget.setHorizontalHeaderLabels(["years", "interest_payment" , "principal_payment" , "loan_amount"])
 
             # Add sample data to the table
             for row in range(len(schedule)):
