@@ -29,11 +29,11 @@ from passport_data import Ui_Dialog_Passport_Data
 
 
 connection = pymysql.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
-        password="elkin",
-        database="bank_test",
+        host="localhost",
+        port=port,
+        user="user",
+        password="password",
+        database="database",
         cursorclass=pymysql.cursors.DictCursor
 )
 
