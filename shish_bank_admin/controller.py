@@ -177,7 +177,7 @@ def insert_occupation(connection , user_id, occupation_name, phone, address, sal
     connection.commit()
     cursor.close()
 def insert_passport_data(connection , passport_number, address_of_issue, date_of_issue, code_of_district, sex, day , month ,year, place_of_birth_date):
-    key = load_key("my_key.key")
+    key = load_key("name_of_file")
     
     cursor = connection.cursor()
     query = """
