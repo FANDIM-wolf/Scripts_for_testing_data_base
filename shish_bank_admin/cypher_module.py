@@ -4,6 +4,10 @@ def encrypt_message(message, key):
     """
     Encrypts a message using a key
     """
+    # Convert the message to a string, if it's not
+    if not isinstance(message, str):
+        message = str(message)
+    
     encoded_message = message.encode()
     f = Fernet(key)
     encrypted_message = f.encrypt(encoded_message)
@@ -65,26 +69,26 @@ Tests  , you can remove them
 
 """
 
-key = generate_key()
-message = "Hello, world!"
-encrypted_message = encrypt_message(message, key)
-decrypted_message = decrypt_message(encrypted_message, key)
-print("Original message:", message)
-print("Encrypted message:", encrypted_message)
-print("Decrypted message:", decrypted_message)
+#key = generate_key()
+#message = "Hello, world!"
+#encrypted_message = encrypt_message(message, key)
+#decrypted_message = decrypt_message(encrypted_message, key)
+#print("Original message:", message)
+#print("Encrypted message:", encrypted_message)
+#print("Decrypted message:", decrypted_message)
 
-print("########################")
+#print("########################")
 
-file_name = "my_file.txt"
-key_file_name = "my_key.key"
-write_key(key,key_file_name)
-key = load_key(key_file_name)
-with open(file_name, "w") as file:
-    file.write("Hello, world!")
-encrypt_file(file_name, key)
-with open(file_name, "r") as file:
-    print("Encrypted file contents:", file.read())
-decrypt_file(file_name, key)
-with open(file_name, "r") as file:
-    print("Decrypted file contents:", file.read())
+#file_name = "my_file.txt"
+#key_file_name = "my_key.key"
+#write_key(key,key_file_name)
+#key = load_key(key_file_name)
+#with open(file_name, "w") as file:
+#    file.write("Hello, world!")
+#encrypt_file(file_name, key)
+#with open(file_name, "r") as file:
+#    print("Encrypted file contents:", file.read())
+#decrypt_file(file_name, key)
+#with open(file_name, "r") as file:
+#    print("Decrypted file contents:", file.read())
 

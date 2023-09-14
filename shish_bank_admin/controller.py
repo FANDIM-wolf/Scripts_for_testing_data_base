@@ -1,6 +1,6 @@
 
 from models import *
-
+from cypher_module import *
 
 
 def get_all_data(cursor):
@@ -71,16 +71,16 @@ def print_clients(clients):
     for client in clients:
         print(client)
 
-def insert_client_values(connection, fss, phone, address, inn, email):
+def insert_client_values(connection, fss, phone, address, email):
     try:
         with connection.cursor() as cursor:
             # SQL-запрос для добавления данных в таблицу 'clients'.
             query = """
-                INSERT INTO clients (FSS, phone, adress, INN, email)
+                INSERT INTO clients (FSS, phone, adress, email)
                 VALUES (%s, %s, %s, %s, %s)
             """
             
-            values = (fss, phone, address, inn, email)
+            values = (fss, phone, address, email)
             
             # Выполнить запрос и внести изменения.
             cursor.execute(query, values)
@@ -166,3 +166,24 @@ def get_INN( connection , user_id):
     #connection.close()
 
     return client
+
+def insert_occupation(connection , user_id, occupation_name, phone, address, salary, position):
+    cursor = connection.cursor()
+    query = """
+        INSERT INTO OCCUPATION (user_id, occupation_name, phone, address, salary, position)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (user_id, occupation_name, phone, address, salary, position))
+    connection.commit()
+    cursor.close()
+def insert_passport_data(connection , passport_number, address_of_issue, date_of_issue, code_of_district, sex, day , month ,year, place_of_birth_date):
+    key = load_key("my_key.key")
+    
+    cursor = connection.cursor()
+    query = """
+        INSERT INTO passport_data ( passport_number, address_of_issue, date_of_issue, code_of_district, sex, day , month ,year , place_of_birth_date)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s , %s)
+    """
+    cursor.execute(query, ( encrypt_message(passport_number , key), encrypt_message(address_of_issue,key), date_of_issue , encrypt_message(code_of_district,key), encrypt_message(sex,key), day, month ,year , encrypt_message(place_of_birth_date,key)))
+    connection.commit()
+    cursor.close()
