@@ -5,8 +5,6 @@
 import pymysql
 
 from pyfiglet import figlet_format 
-     
-
 def get_all_data(cursor):
     # SQL-запрос для выборки всех данных из таблицы 'clients'
     sql = "SELECT * FROM clients"
